@@ -1,0 +1,11 @@
+{
+    "status": "success",
+    "msg": "",
+    "data": {
+      "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ6cHJlY2lzaW9uIiwic3ViIjoiand0IiwiYXVkIjoidXNlciIsImV4cCI6MTU5Mzc1NjkyMCwibmJmIjoxNTYyNjUyOTIwLCJpYXQiOjE1NjI2NTI5MjAsImp0aSI6Mn0.tS1inFnFC3RlBN6DEXlPfwg0--qo2M4C6uf6UgL8x_c",
+      "account_id": "1210",
+      "account_name": "Guest",
+      "account_type": 0
+    }
+  }
+  

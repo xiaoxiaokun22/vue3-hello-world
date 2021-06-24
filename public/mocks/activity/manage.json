@@ -1,0 +1,51 @@
+{
+  "status": "success",
+  "msg": "",
+  "data": {
+    "list": [
+      {
+        "id":1,
+        "name": "碧然德_净水器_2019_1月",
+        "activityStartDate": "2019-03-29",
+        "activityEndDate": "2019-04-01",
+        "strategyCount": "4",
+        "totalBudget": 20000,
+        "totalCost": 9883,
+        "requestCount": 12511,
+        "bidCount": 10245,
+        "uv": 342,
+        "exposeCount": 98248,
+        "clickCount": 355,
+        "clickRate": 3.6,
+        "CPM": 90,
+        "CPC": 30,
+        "jointFrequencyControl": "开启",
+        "modifyTime": "2019-03-28 21:42:29"
+      },
+      {
+        "id":2,
+        "name": "碧然德_净水器_2019_1月",
+        "activityStartDate": "2019-03-29",
+        "activityEndDate": "2019-04-01",
+        "strategyCount": "4",
+        "totalBudget": 20000,
+        "totalCost": 10200,
+        "requestCount": 87123,
+        "bidCount": 78224,
+        "uv": 342,
+        "exposeCount": 41235,
+        "clickCount": 1411,
+        "clickRate": 3.4,
+        "CPM": 85,
+        "CPC": 27,
+        "jointFrequencyControl": "开启",
+        "modifyTime": "2019-03-28 21:42:29"
+      }
+    ],
+    "pagination": {
+      "total": 2,
+      "current": 1,
+      "pageSize": 15
+    }
+  }
+}
