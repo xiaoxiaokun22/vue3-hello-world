@@ -10,9 +10,51 @@
         <a-layout-content
           :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
         >
+            <div class="top">
+                <div class="under" style="display: block;">
+                    <div class="operate">
+                        <a-button type="primary">新增活动</a-button>
+                        <a-input-search 
+                            placeholder="请输入活动名称/活动id"
+                            v-model:value="keywords"
+                            style="width: 220px; margin-left: auto;"
+                            @search="onSearch"
+                        />
+<a-popover title="选择展示项" trigger="click" placement="bottom">
+    
+    <a-button><SelectOutlined />自定义列</a-button>
+    <template #content>
+        <a-checkbox-group class="checkbox_group" v-model:value="selectedOptions" name="checkboxgroup" :options="plainOptions" />
+    </template>
+</a-popover>
+                    </div>
+                </div>
+            </div>
             <a-table :columns="columns" :data-source="dataSource" :scroll="{ x:1800 }">
+                <template #customTitle>
+                    <span>
+                        总预算
+                        <a-tooltip placement="bottom">
+                            <template #title>
+                                <span>新增活动时输入的总预算，仅用作整体预算与总花费对比</span>
+                            </template>
+                            <QuestionCircleOutlined />
+                        </a-tooltip>
+                    </span>
+                </template>
+                <template #customTitle2>
+                    <span>
+                        MMA宏替换
+                        <a-tooltip placement="bottom">
+                            <template #title>
+                                <span>开启后该活动下符合MMA宏标准的三方监测系统将进行替换，标准宏样例：__IMEI__, __IDFA__</span>
+                            </template>
+                            <QuestionCircleOutlined />
+                        </a-tooltip>
+                    </span>
+                </template>
                 <template #action>
-                    <a>action</a>
+                    <a style="cursor: pointer; margin-right: 10px" @click="handleEdit(1)">编辑</a>
                 </template>
             </a-table>
         </a-layout-content>
@@ -27,7 +69,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { reactive,onMounted, onUnmounted,defineComponent,ref,toRefs } from 'vue';
 import Sider  from '@/components/Sider.vue';
 import Header  from '@/components/Header.vue';
-
+import { QuestionCircleOutlined, SelectOutlined } from '@ant-design/icons-vue';
 const columns = [
     {
         key:'id', 
@@ -58,8 +100,10 @@ const columns = [
     {
         key:'totalBudget', 
         dataIndex:'totalBudget',
-        title:'总预算',
         width: 100,
+        slots:{  
+            title:'customTitle',
+        }
     },
     {
         key:'jointFrequencyControl', 
@@ -70,8 +114,10 @@ const columns = [
     {
         key:'mma', 
         dataIndex:'mma',
-        title:'MMA宏替换',
-        width: 125,
+        width: 130,
+        slots:{  
+            title:'customTitle2',
+        }
     },
     {
         key:'modifyTime', 
@@ -137,10 +183,13 @@ const columns = [
     },
 ];
 const dataSource = [];
+const plainOptions = ['活动周期','策略数','预算'];
 export default defineComponent({
     components:{
         Sider,
         Header,
+        QuestionCircleOutlined,
+        SelectOutlined
     },
     setup() {
             const router = useRouter()
@@ -152,14 +201,20 @@ export default defineComponent({
                 selectedKeys: ['/activitymanage/list'],
                 columns: columns,
                 dataSource: dataSource,
+                keywords: '',
+                selectedOptions: [],
             })
             onMounted(async () => {
                 const {data:activityList} = await apiActivityList();
-                state.dataSource = activityList.data.list;
-                console.log(state.dataSource);
+                //处理返回数据
+                let list = activityList.data.list;
+                list.forEach(item => {
+                    item.period = item.activityEndDate + '~' + item.activityStartDate;
+                });
+                state.dataSource = list;
             })
-            const onClick = (item) => {
-                router.push(item.key);
+            const onSearch = (searchValue) => {
+                console.log('use value', searchValue);
             };
             const onOpenChange = openKeys => {
                 const latestOpenKey = openKeys.find(key => state.openKeys.indexOf(key) === -1);
@@ -170,11 +225,17 @@ export default defineComponent({
                     state.openKeys = latestOpenKey ? [latestOpenKey] : [];
                 }
             };
+            const handleEdit = (id) => {
+                router.push('/activitymanage/edit');
+            }
             return {   
                 ...toRefs(state),
                 collapsed: false,
-                onClick,
-                onOpenChange
+                onOpenChange,
+                handleEdit,
+                onSearch,
+                //
+                plainOptions
             };
     },
 });
@@ -231,4 +292,22 @@ element.style {
     border: 1px solid #eee;
 }
 
+.under {
+    position: relative;
+    width: 100%;
+    height: 32px;
+}
+.under > .operate {
+    top: 0;
+    bottom: 0;
+}
+.top .under > * {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+label.ant-checkbox-group-item {
+    display: block!important;
+}
 </style>

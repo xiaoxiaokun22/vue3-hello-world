@@ -53,7 +53,16 @@ const routes = [
     component: () => import (
     /* webpackChunkName: "login" */
     "../views/ActivitymanageList.vue")
-}
+  },
+  {
+    path: "/activitymanage/edit",
+    name: "activitymanage_edit",
+    meta: {
+        title: '编辑活动'
+    },
+    component: () => import (
+      "../views/ActivitymanageEdit.vue")
+  } 
 ]
 
 const router = createRouter({

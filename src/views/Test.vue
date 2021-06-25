@@ -1,114 +1,111 @@
 <template>
-  <a-layout>
-    <a-layout-header class="header">
-      <div class="logo" />
-      <a-menu
-        theme="dark"
-        mode="horizontal"
-        v-model:selectedKeys="selectedKeys1"
-        :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item key="1">nav 1</a-menu-item>
-        <a-menu-item key="2">nav 2</a-menu-item>
-        <a-menu-item key="3">nav 3</a-menu-item>
-      </a-menu>
-    </a-layout-header>
-    <a-layout>
-      <a-layout-sider width="200" style="background: #fff">
-        <a-menu
-          mode="inline"
-          v-model:selectedKeys="selectedKeys2"
-          v-model:openKeys="openKeys"
-          :style="{ height: '100%', borderRight: 0 }"
+  <a-table :columns="columns" :data-source="data">
+    <template #name="{ text }">
+      <a>{{ text }}</a>
+    </template>
+    <template #customTitle>
+      <span>
+        <smile-outlined />
+        Name
+      </span>
+    </template>
+    <template #tags="{ text: tags }">
+      <span>
+        <a-tag
+          v-for="tag in tags"
+          :key="tag"
+          :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'"
         >
-          <a-sub-menu key="sub1">
-            <template #title>
-              <span>
-                <user-outlined />
-                subnav 1
-              </span>
-            </template>
-            <a-menu-item key="1">option1</a-menu-item>
-            <a-menu-item key="2">option2</a-menu-item>
-            <a-menu-item key="3">option3</a-menu-item>
-            <a-menu-item key="4">option4</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub2">
-            <template #title>
-              <span>
-                <laptop-outlined />
-                subnav 2
-              </span>
-            </template>
-            <a-menu-item key="5">option5</a-menu-item>
-            <a-menu-item key="6">option6</a-menu-item>
-            <a-menu-item key="7">option7</a-menu-item>
-            <a-menu-item key="8">option8</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub3">
-            <template #title>
-              <span>
-                <notification-outlined />
-                subnav 3
-              </span>
-            </template>
-            <a-menu-item key="9">option9</a-menu-item>
-            <a-menu-item key="10">option10</a-menu-item>
-            <a-menu-item key="11">option11</a-menu-item>
-            <a-menu-item key="12">option12</a-menu-item>
-          </a-sub-menu>
-        </a-menu>
-      </a-layout-sider>
-      <a-layout style="padding: 0 24px 24px">
-        <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item>Home</a-breadcrumb-item>
-          <a-breadcrumb-item>List</a-breadcrumb-item>
-          <a-breadcrumb-item>App</a-breadcrumb-item>
-        </a-breadcrumb>
-        <a-layout-content
-          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
-        >
-          Content
-        </a-layout-content>
-      </a-layout>
-    </a-layout>
-  </a-layout>
+          {{ tag.toUpperCase() }}
+        </a-tag>
+      </span>
+    </template>
+    <template #action="{ record }">
+      <span>
+        <a>Invite 一 {{ record.name }}</a>
+        <a-divider type="vertical" />
+        <a>Delete</a>
+        <a-divider type="vertical" />
+        <a class="ant-dropdown-link">
+          More actions
+          <down-outlined />
+        </a>
+      </span>
+    </template>
+  </a-table>
 </template>
 <script>
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons-vue';
-import { defineComponent, ref } from 'vue';
-export default defineComponent({
-  components: {
-    UserOutlined,
-    LaptopOutlined,
-    NotificationOutlined,
+import { SmileOutlined, DownOutlined } from '@ant-design/icons-vue';
+import { defineComponent } from 'vue';
+const columns = [
+  {
+    dataIndex: 'name',
+    key: 'name',
+    slots: {
+      title: 'customTitle',
+      customRender: 'name',
+    },
   },
-
+  {
+    title: 'Age',
+    dataIndex: 'age',
+    key: 'age',
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+    key: 'address',
+  },
+  {
+    title: 'Tags',
+    key: 'tags',
+    dataIndex: 'tags',
+    slots: {
+      customRender: 'tags',
+    },
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    slots: {
+      customRender: 'action',
+    },
+  },
+];
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+];
+export default defineComponent({
   setup() {
     return {
-      selectedKeys1: ref(['2']),
-      selectedKeys2: ref(['1']),
-      collapsed: ref(false),
-      openKeys: ref(['sub1']),
+      data,
+      columns,
     };
+  },
+
+  components: {
+    SmileOutlined,
+    DownOutlined,
   },
 });
 </script>
-<style>
-#components-layout-demo-top-side-2 .logo {
-  float: left;
-  width: 120px;
-  height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.ant-row-rtl #components-layout-demo-top-side-2 .logo {
-  float: right;
-  margin: 16px 0 16px 24px;
-}
-
-.site-layout-background {
-  background: #fff;
-}
-</style>
