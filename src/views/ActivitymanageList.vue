@@ -20,13 +20,13 @@
                             style="width: 220px; margin-left: auto;"
                             @search="onSearch"
                         />
-<a-popover title="选择展示项" trigger="click" placement="bottom">
-    
-    <a-button><SelectOutlined />自定义列</a-button>
-    <template #content>
-        <a-checkbox-group class="checkbox_group" v-model:value="selectedOptions" name="checkboxgroup" :options="plainOptions" />
-    </template>
-</a-popover>
+                        <a-popover title="选择展示项" trigger="click" placement="bottom">
+                            
+                            <a-button><SelectOutlined />自定义列</a-button>
+                            <template #content>
+                                <a-checkbox-group v-model:value="selectedOptions" name="checkboxgroup" :options="plainOptions"  />
+                            </template>
+                        </a-popover>
                     </div>
                 </div>
             </div>
@@ -307,7 +307,7 @@ element.style {
     display: flex;
     align-items: center;
 }
-label.ant-checkbox-group-item {
+.ant-checkbox-group-item {
     display: block!important;
 }
 </style>
